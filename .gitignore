@@ -1,0 +1,6 @@
+.alpackages/*.app
+*.app
+*.7z
+.vscode/launch.json
+.vscode/settings.json
+.vscode/ruleset.json
