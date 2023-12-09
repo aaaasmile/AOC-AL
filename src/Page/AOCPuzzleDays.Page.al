@@ -9,6 +9,13 @@ page 52000 "AOC Days"
     {
         area(Content)
         {
+            group(General)
+            {
+                field(PartNo; g_IsPartOne)
+                {
+                    Caption = 'Is Part one';
+                }
+            }
             repeater(Control1)
             {
                 field(Code; Rec.Code)
@@ -46,9 +53,11 @@ page 52000 "AOC Days"
 
                 trigger OnAction()
                 var
-                    ImportWaterReadings: Codeunit "Adventure of Code Mgt.";
+                    AdventureOfCodeMgt: Codeunit "Adventure of Code Mgt.";
                 begin
-                    ImportWaterReadings.SelectAndImportInputTest(Rec);
+                    AdventureOfCodeMgt.SelectAndImportInputTest(Rec);
+                    UpdateCalcFields();
+                    CurrPage.Update();
                 end;
             }
             action(ImportPuzzle)
@@ -59,9 +68,24 @@ page 52000 "AOC Days"
 
                 trigger OnAction()
                 var
-                    ImportWaterReadings: Codeunit "Adventure of Code Mgt.";
+                    AdventureOfCodeMgt: Codeunit "Adventure of Code Mgt.";
                 begin
-                    ImportWaterReadings.SelectAndImportInput(Rec);
+                    AdventureOfCodeMgt.SelectAndImportInput(Rec);
+                    UpdateCalcFields();
+                    CurrPage.Update();
+                end;
+            }
+            action(RunTest)
+            {
+                ApplicationArea = All;
+                Caption = 'Run Test';
+                Image = Action;
+
+                trigger OnAction()
+                var
+                    AdventureOfCodeMgt: Codeunit "Adventure of Code Mgt.";
+                begin
+                    AdventureOfCodeMgt.RunTest(Rec);
                 end;
             }
         }
@@ -73,13 +97,22 @@ page 52000 "AOC Days"
             actionref(ImportPuzzleTest_Promoted; ImportPuzzle)
             {
             }
+            actionref(RunTestPuzzle_Promoted; RunTest)
+            {
+            }
         }
     }
     var
         g_HasInputTest: Boolean;
         g_HasInput: Boolean;
+        g_IsPartOne: Boolean;
 
     trigger OnAfterGetRecord()
+    begin
+        UpdateCalcFields();
+    end;
+
+    local procedure UpdateCalcFields()
     begin
         Rec.CalcFields("Puzzle Input", "Puzzle Input Test", "Puzzle Input Test 2");
         g_HasInput := Rec."Puzzle Input".HasValue();
