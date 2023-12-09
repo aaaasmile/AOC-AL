@@ -57,7 +57,6 @@ page 52000 "AOC Days"
                 begin
                     AdventureOfCodeMgt.SelectAndImportInputTest(Rec);
                     UpdateCalcFields();
-                    CurrPage.Update();
                 end;
             }
             action(ImportPuzzle)
@@ -72,7 +71,6 @@ page 52000 "AOC Days"
                 begin
                     AdventureOfCodeMgt.SelectAndImportInput(Rec);
                     UpdateCalcFields();
-                    CurrPage.Update();
                 end;
             }
             action(RunTest)
@@ -88,6 +86,19 @@ page 52000 "AOC Days"
                     AdventureOfCodeMgt.RunTest(Rec, g_IsPartOne);
                 end;
             }
+            action(RunInput)
+            {
+                ApplicationArea = All;
+                Caption = 'Run Input';
+                Image = Action;
+
+                trigger OnAction()
+                var
+                    AdventureOfCodeMgt: Codeunit "Adventure of Code Mgt.";
+                begin
+                    AdventureOfCodeMgt.RunInput(Rec, g_IsPartOne);
+                end;
+            }
         }
         area(Promoted)
         {
@@ -98,6 +109,9 @@ page 52000 "AOC Days"
             {
             }
             actionref(RunTestPuzzle_Promoted; RunTest)
+            {
+            }
+            actionref(RunInput_Promoted; RunInput)
             {
             }
         }
