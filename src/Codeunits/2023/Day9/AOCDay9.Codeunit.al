@@ -7,7 +7,7 @@ codeunit 52001 "AOC Day 9"
         TempAOCNumberLine: Record "AOC Number Line" temporary;
         Line: Text;
         LineIx: Integer;
-        Counter: Integer;
+        Counter: Decimal;
         LineCounter: Integer;
         LineNo: Integer;
     begin
@@ -20,13 +20,13 @@ codeunit 52001 "AOC Day 9"
         end;
         Counter := 0;
         for LineNo := 0 to LineIx - 1 do begin
-            LineCounter := ExtrapolateLine(TempAOCNumberLine, LineNo);
+            LineCounter := ExtrapolateLineZero(TempAOCNumberLine, LineNo);
             Counter += LineCounter;
         end;
-        Result := Format('%1', Counter);
+        Result := Format(Counter);
     end;
 
-    local procedure ExtrapolateLine(var TempAOCNumberLine: Record "AOC Number Line" temporary; LineNo: Integer): Integer
+    local procedure ExtrapolateLineZero(var TempAOCNumberLine: Record "AOC Number Line" temporary; LineNo: Integer): Integer
     var
         TempNumDiff: Record "AOC Number Line" temporary;
         Addition: Integer;

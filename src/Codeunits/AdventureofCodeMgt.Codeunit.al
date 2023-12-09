@@ -79,7 +79,7 @@ codeunit 52000 "Adventure of Code Mgt."
         Result: Text;
     begin
         Puzzle.CalcFields("Puzzle Input Test");
-        if Puzzle."Puzzle Input Test".HasValue() then
+        if not Puzzle."Puzzle Input Test".HasValue() then
             Error('No test imported');
         Puzzle."Puzzle Input Test".CreateInStream(SourceInStream);
         while not SourceInStream.EOS do begin
