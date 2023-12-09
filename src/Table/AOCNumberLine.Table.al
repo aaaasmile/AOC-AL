@@ -42,6 +42,20 @@ table 52001 "AOC Number Line"
             Rec."Line No." := LineNo;
             Rec.Value := Num;
             Rec.Insert();
+            EntryNo += 1;
         end;
+    end;
+
+    internal procedure DuplicateLineTo(var TempAOCNumberLine: Record "AOC Number Line" temporary; LineNo: Integer)
+    begin
+        Rec.Reset();
+        Rec.SetRange("Line No.", LineNo);
+        if Rec.FindSet() then
+            repeat
+                TempAOCNumberLine."Entry No." := Rec."Entry No.";
+                TempAOCNumberLine."Line No." := 0;
+                TempAOCNumberLine.Value := Rec.Value;
+                TempAOCNumberLine.Insert();
+            until Rec.Next() = 0;
     end;
 }

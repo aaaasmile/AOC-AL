@@ -49,6 +49,11 @@ codeunit 52000 "Adventure of Code Mgt."
             FileName := FileManagement.BLOBImportWithFilter(TempBlob, ImportPuzzleLbl, '', FileFilterTxt, FileFilterExtensionTxt);
     end;
 
+    procedure RunInput(Puzzle: Record "AOC Puzzle Day"; IsPart1: Boolean)
+    begin
+        // TODO
+    end;
+
     procedure RunTest(Puzzle: Record "AOC Puzzle Day"; IsPart1: Boolean)
     var
         SourceInStream: InStream;
@@ -56,6 +61,7 @@ codeunit 52000 "Adventure of Code Mgt."
         AllLines: List of [Text];
         Result: Text;
     begin
+        Puzzle.CalcFields("Puzzle Input Test");
         Puzzle."Puzzle Input Test".CreateInStream(SourceInStream);
         while not SourceInStream.EOS do begin
             SourceInStream.ReadText(Line);

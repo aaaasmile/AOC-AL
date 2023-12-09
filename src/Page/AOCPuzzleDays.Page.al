@@ -107,6 +107,11 @@ page 52000 "AOC Days"
         g_HasInput: Boolean;
         g_IsPartOne: Boolean;
 
+    trigger OnOpenPage()
+    begin
+        g_IsPartOne := true
+    end;
+
     trigger OnAfterGetRecord()
     begin
         UpdateCalcFields();
