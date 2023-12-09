@@ -8,6 +8,7 @@ codeunit 52001 "AOC Day 9"
         Line: Text;
         LineIx: Integer;
         Counter: Integer;
+        LineCounter: Integer;
         LineNo: Integer;
     begin
         if (Year <> 2023) or (Day <> 9) then
@@ -19,10 +20,10 @@ codeunit 52001 "AOC Day 9"
         end;
         Counter := 0;
         for LineNo := 0 to LineIx - 1 do begin
-            Counter += ExtrapolateLine(TempAOCNumberLine, LineNo);
+            LineCounter := ExtrapolateLine(TempAOCNumberLine, LineNo);
+            Counter += LineCounter;
         end;
         Result := Format('%1', Counter);
-
     end;
 
     local procedure ExtrapolateLine(var TempAOCNumberLine: Record "AOC Number Line" temporary; LineNo: Integer): Integer
@@ -33,12 +34,15 @@ codeunit 52001 "AOC Day 9"
         TempAOCNumberLine.DuplicateLineTo(TempNumDiff, LineNo);
 
         Addition := ExtrapolateDiffLine(TempNumDiff, 0);
-        exit(Addition);
+        TempNumDiff.Reset();
+        TempNumDiff.SetRange("Line No.", 0);
+        TempNumDiff.FindLast();
+        exit(TempNumDiff.Value + Addition);
     end;
 
     local procedure ExtrapolateDiffLine(var TempNumDiff: Record "AOC Number Line" temporary; LineNo: Integer): Integer
     var
-        TempNumDiffNext: Record "AOC Number Line" temporary;
+        TempNumDiffSupport: Record "AOC Number Line" temporary;
         ValA: Integer;
         ValB: Integer;
         Ix: Integer;
@@ -46,40 +50,42 @@ codeunit 52001 "AOC Day 9"
         EntryNo: Integer;
         SumTot: Integer;
         Addition: Integer;
+        LineNoNext: Integer;
     begin
-        Ix := 1;
+        LineNoNext := LineNo + 1;
+        Ix := 0;
         TempNumDiff.Reset();
         TempNumDiff.SetRange("Line No.", LineNo);
         TempNumDiff.FindSet();
         repeat
-            if (Ix mod 2) = 0 then begin
+            if Ix = 0 then
+                ValA := TempNumDiff.Value
+            else begin
                 ValB := TempNumDiff.Value;
                 Diff := ValB - ValA;
-                TempNumDiffNext."Entry No." := EntryNo;
-                TempNumDiffNext."Line No." := LineNo;
-                TempNumDiffNext.Value := Diff;
-                TempNumDiffNext.Insert();
+                TempNumDiffSupport."Entry No." := EntryNo;
+                TempNumDiffSupport."Line No." := LineNoNext;
+                TempNumDiffSupport.Value := Diff;
+                TempNumDiffSupport.Insert();
                 EntryNo += 1;
-            end else
-                ValA := TempNumDiff.Value;
-
+                ValA := ValB;
+            end;
             Ix += 1;
         until TempNumDiff.Next() = 0;
+        TempNumDiff.InsertLineFrom(TempNumDiffSupport, LineNoNext);
 
-        TempNumDiffNext.Reset();
-        TempNumDiffNext.SetRange("Line No.", LineNo);
-        TempNumDiffNext.CalcSums(Value);
-        SumTot := TempNumDiffNext.Value;
+        TempNumDiffSupport.Reset();
+        TempNumDiffSupport.SetRange("Line No.", LineNoNext);
+        TempNumDiffSupport.CalcSums(Value);
+        SumTot := TempNumDiffSupport.Value;
         if SumTot = 0 then
             exit(0);
 
-        LineNo += 1;
-        Addition := ExtrapolateDiffLine(TempNumDiff, LineNo);
+        Addition := ExtrapolateDiffLine(TempNumDiff, LineNoNext);
 
-        LineNo -= 1;
-        TempNumDiffNext.Reset();
-        TempNumDiffNext.SetRange("Line No.", LineNo);
-        TempNumDiffNext.FindLast();
-        exit(TempNumDiffNext.Value + Addition);
+        TempNumDiff.Reset();
+        TempNumDiff.SetRange("Line No.", LineNoNext);
+        TempNumDiff.FindLast();
+        exit(TempNumDiff.Value + Addition);
     end;
 }

@@ -58,4 +58,17 @@ table 52001 "AOC Number Line"
                 TempAOCNumberLine.Insert();
             until Rec.Next() = 0;
     end;
+
+    internal procedure InsertLineFrom(var TempNumSupport: Record "AOC Number Line" temporary; LineNoNext: Integer)
+    begin
+        TempNumSupport.Reset();
+        TempNumSupport.SetRange("Line No.", LineNoNext);
+        if TempNumSupport.FindSet() then
+            repeat
+                Rec."Entry No." := TempNumSupport."Entry No.";
+                Rec."Line No." := LineNoNext;
+                Rec.Value := TempNumSupport.Value;
+                Rec.Insert();
+            until TempNumSupport.Next() = 0;
+    end;
 }
