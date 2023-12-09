@@ -50,7 +50,24 @@ codeunit 52000 "Adventure of Code Mgt."
     end;
 
     procedure RunTest(Puzzle: Record "AOC Puzzle Day")
+    var
+        SourceInStream: InStream;
+        Line: Text;
+        AllLines: List of [Text];
+        Result: Text;
     begin
+        Puzzle."Puzzle Input Test".CreateInStream(SourceInStream);
+        while not SourceInStream.EOS do begin
+            SourceInStream.ReadText(Line);
+            Line := Line.Trim();
+            AllLines.Add(Line);
+        end;
+        OnRunTest(Puzzle.Year, Puzzle.Day, AllLines, Result);
+        Message('Result is %1', Result);
+    end;
 
+    [IntegrationEvent(true, false)]
+    local procedure OnRunTest(Year: Integer; Day: Integer; AllLines: List of [Text]; var Result: Text)
+    begin
     end;
 }
