@@ -3,40 +3,41 @@ codeunit 52000 "Adventure of Code Mgt."
     var
         FileManagement: Codeunit "File Management";
         FileFilterExtensionTxt: Label 'txt,csv', Locked = true;
-        FileFilterTxt: Label 'Text Files(*.txt;*.csv)|*.txt;*.csv';
+        FileFilterTxt: Label 'Text Files(*.txt;*.csv)|*.txt;*.csv', Locked = true;
         ImportPuzzleLbl: Label 'Select puzzle input file';
 
-    procedure SelectAndImportPuzzle(Puzzle: Record "AOC Puzzle Day")
+    procedure SelectAndImport(RecRef: RecordRef; PuzzleOutStream: OutStream)
     var
         TempBlob: Codeunit "Temp Blob";
         PuzzleInStream: InStream;
-        PuzzleOutStream: OutStream;
         FileName: Text;
     begin
-        Puzzle.CalcFields("Puzzle Imput");
-        if not Puzzle."Puzzle Imput".HasValue then begin
-            FileName := GetFileName(TempBlob);
-            if FileName <> '' then begin
-                TempBlob.CreateInStream(PuzzleInStream);
-                Puzzle."Puzzle Imput".CreateOutStream(PuzzleOutStream);
-                CopyStream(PuzzleOutStream, PuzzleInStream);
-                Puzzle.Modify();
-            end;
+        FileName := GetFileName(TempBlob);
+        if FileName <> '' then begin
+            TempBlob.CreateInStream(PuzzleInStream);
+            CopyStream(PuzzleOutStream, PuzzleInStream);
+            RecRef.Modify();
         end;
     end;
 
-    procedure RemovePuzzleInputTest(Puzzle: Record "AOC Puzzle Day")
+    procedure SelectAndImportInput(Puzzle: Record "AOC Puzzle Day")
+    var
+        RecRef: RecordRef;
+        PuzzleOutStream: OutStream;
     begin
-        Puzzle.CalcFields("Puzzle Imput");
-        Clear(Puzzle."Puzzle Imput");
-        Puzzle.Modify();
+        RecRef.GetTable(Puzzle);
+        Puzzle."Puzzle Input".CreateOutStream(PuzzleOutStream);
+        SelectAndImport(RecRef, PuzzleOutStream);
     end;
 
-    procedure RemovePuzzleInputReal(Puzzle: Record "AOC Puzzle Day")
+    procedure SelectAndImportInputTest(Puzzle: Record "AOC Puzzle Day")
+    var
+        RecRef: RecordRef;
+        PuzzleOutStream: OutStream;
     begin
-        Puzzle.CalcFields("Puzzle Imput");
-        Clear(Puzzle."Puzzle Imput");
-        Puzzle.Modify();
+        RecRef.GetTable(Puzzle);
+        Puzzle."Puzzle Input Test".CreateOutStream(PuzzleOutStream);
+        SelectAndImport(RecRef, PuzzleOutStream);
     end;
 
     local procedure GetFileName(var TempBlob: Codeunit "Temp Blob") FileName: Text

@@ -11,7 +11,23 @@ page 52000 "AOC Days"
         {
             repeater(Control1)
             {
+                field(Code; Rec.Code)
+                {
+                    ApplicationArea = All;
+                }
+                field(Year; Rec.Year)
+                {
+                    ApplicationArea = All;
+                }
                 field(Day; Rec.Day)
+                {
+                    ApplicationArea = All;
+                }
+                field("Input Test"; g_HasInputTest)
+                {
+                    ApplicationArea = All;
+                }
+                field("Input"; g_HasInput)
                 {
                     ApplicationArea = All;
                 }
@@ -22,40 +38,51 @@ page 52000 "AOC Days"
     {
         area(Processing)
         {
-            action(ImportPuzle)
+            action(ImportPuzzleTest)
             {
                 ApplicationArea = All;
-                Caption = 'Import Puzzle';
+                Caption = 'Import Input Test';
                 Image = Questionaire;
-                ToolTip = 'Import Puzzle';
 
                 trigger OnAction()
                 var
                     ImportWaterReadings: Codeunit "Adventure of Code Mgt.";
                 begin
-                    ImportWaterReadings.SelectAndImportPuzzle(Rec);
+                    ImportWaterReadings.SelectAndImportInputTest(Rec);
                 end;
             }
-            // action(RemovePuzleInput)
-            // {
-            //     ApplicationArea = All;
-            //     Caption = 'Remove Puzzle Input';
-            //     Image = Delete;
-            //     ToolTip = 'Remove Puzzle Input';
+            action(ImportPuzzle)
+            {
+                ApplicationArea = All;
+                Caption = 'Import Input';
+                Image = Questionaire;
 
-            //     // trigger OnAction()
-            //     // var
-            //     //     ImportWaterReadings: Codeunit "Adventure of Code Mgt.";
-            //     // begin
-            //     //     ImportWaterReadings.RemovePuzzleInput(Rec);
-            //     // end;
-            // }
+                trigger OnAction()
+                var
+                    ImportWaterReadings: Codeunit "Adventure of Code Mgt.";
+                begin
+                    ImportWaterReadings.SelectAndImportInput(Rec);
+                end;
+            }
         }
         area(Promoted)
         {
-            actionref(ImportPuzle_Promoted; ImportPuzle)
+            actionref(ImportPuzzle_Promoted; ImportPuzzleTest)
+            {
+            }
+            actionref(ImportPuzzleTest_Promoted; ImportPuzzle)
             {
             }
         }
     }
+    var
+        g_HasInputTest: Boolean;
+        g_HasInput: Boolean;
+
+    trigger OnAfterGetRecord()
+    begin
+        Rec.CalcFields("Puzzle Input", "Puzzle Input Test", "Puzzle Input Test 2");
+        g_HasInput := Rec."Puzzle Input".HasValue();
+        g_HasInputTest := Rec."Puzzle Input Test".HasValue();
+    end;
 }

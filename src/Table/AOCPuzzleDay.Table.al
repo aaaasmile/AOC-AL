@@ -5,28 +5,36 @@ table 52000 "AOC Puzzle Day"
 
     fields
     {
-        field(1; Year; Integer)
+        field(1; Code; Code[20])
+        {
+            Caption = 'Code';
+        }
+        field(10; Year; Integer)
         {
             Caption = 'Year';
         }
-        field(2; Day; Integer)
+        field(15; Day; Integer)
         {
             Caption = 'Day';
         }
-        field(3; URL; Text[1024])
+        field(20; "Puzzle Input"; Blob)
         {
-            Caption = 'URL to puzzle text and file';
-            ExtendedDatatype = URL;
+            Caption = 'Puzzle Input';
         }
-        field(5; "Puzzle Imput"; Blob)
+        field(25; "Puzzle Input Test"; Blob)
         {
-            Caption = 'Puzzle Imput';
+            Caption = 'Puzzle Input Test';
         }
+        field(30; "Puzzle Input Test 2"; Blob)
+        {
+            Caption = 'Puzzle Input Test 2';
+        }
+
     }
 
     keys
     {
-        key(PK; Year, Day)
+        key(PK; Code)
         {
             Clustered = true;
         }
