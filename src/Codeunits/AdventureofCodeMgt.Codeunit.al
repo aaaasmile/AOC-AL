@@ -49,7 +49,7 @@ codeunit 52000 "Adventure of Code Mgt."
             FileName := FileManagement.BLOBImportWithFilter(TempBlob, ImportPuzzleLbl, '', FileFilterTxt, FileFilterExtensionTxt);
     end;
 
-    procedure RunTest(Puzzle: Record "AOC Puzzle Day")
+    procedure RunTest(Puzzle: Record "AOC Puzzle Day"; IsPart1: Boolean)
     var
         SourceInStream: InStream;
         Line: Text;
@@ -62,12 +62,20 @@ codeunit 52000 "Adventure of Code Mgt."
             Line := Line.Trim();
             AllLines.Add(Line);
         end;
-        OnRunTest(Puzzle.Year, Puzzle.Day, AllLines, Result);
+        if IsPart1 then
+            OnRunTestPart1(Puzzle.Year, Puzzle.Day, AllLines, Result)
+        else
+            OnRunTestPart2(Puzzle.Year, Puzzle.Day, AllLines, Result);
         Message('Result is %1', Result);
     end;
 
     [IntegrationEvent(true, false)]
-    local procedure OnRunTest(Year: Integer; Day: Integer; AllLines: List of [Text]; var Result: Text)
+    local procedure OnRunTestPart1(Year: Integer; Day: Integer; AllLines: List of [Text]; var Result: Text)
+    begin
+    end;
+
+    [IntegrationEvent(true, false)]
+    local procedure OnRunTestPart2(Year: Integer; Day: Integer; AllLines: List of [Text]; var Result: Text)
     begin
     end;
 }

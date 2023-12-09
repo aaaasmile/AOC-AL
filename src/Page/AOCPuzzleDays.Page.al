@@ -85,7 +85,7 @@ page 52000 "AOC Days"
                 var
                     AdventureOfCodeMgt: Codeunit "Adventure of Code Mgt.";
                 begin
-                    AdventureOfCodeMgt.RunTest(Rec);
+                    AdventureOfCodeMgt.RunTest(Rec, g_IsPartOne);
                 end;
             }
         }
