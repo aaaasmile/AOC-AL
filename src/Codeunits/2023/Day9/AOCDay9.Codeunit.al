@@ -29,7 +29,7 @@ codeunit 52001 "AOC Day 9"
     local procedure ExtrapolateLineZero(var TempAOCNumberLine: Record "AOC Number Line" temporary; LineNo: Integer): Integer
     var
         TempNumDiff: Record "AOC Number Line" temporary;
-        Addition: Integer;
+        Addition: Decimal;
     begin
         TempAOCNumberLine.DuplicateLineTo(TempNumDiff, LineNo);
 
@@ -43,13 +43,13 @@ codeunit 52001 "AOC Day 9"
     local procedure ExtrapolateDiffLine(var TempNumDiff: Record "AOC Number Line" temporary; LineNo: Integer): Integer
     var
         TempNumDiffSupport: Record "AOC Number Line" temporary;
-        ValA: Integer;
-        ValB: Integer;
+        ValA: Decimal;
+        ValB: Decimal;
         Ix: Integer;
-        Diff: Integer;
+        Diff: Decimal;
         EntryNo: Integer;
-        SumTot: Integer;
-        Addition: Integer;
+        SumTot: Decimal;
+        Addition: Decimal;
         LineNoNext: Integer;
     begin
         LineNoNext := LineNo + 1;

@@ -14,7 +14,7 @@ table 52001 "AOC Number Line"
         {
             Caption = 'Entry No.';
         }
-        field(10; "Value"; Integer)
+        field(10; "Value"; Decimal)
         {
             Caption = 'Value';
         }

@@ -13,7 +13,7 @@ page 52000 "AOC Days"
             {
                 field(PartNo; g_IsPartOne)
                 {
-                    Caption = 'Is Part one';
+                    Caption = 'Part one';
                 }
             }
             repeater(Control1)
