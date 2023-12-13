@@ -31,7 +31,7 @@ table 52001 "AOC Number Line"
         NumbersYouHave: List of [Text];
         NumText: Text;
         EntryNo: Integer;
-        Num: Integer;
+        Num: Decimal;
     begin
         // expect something like : 0 4 9 15 22 30 39 49 60 72 85 99 114 130 147
         EntryNo := 0;
